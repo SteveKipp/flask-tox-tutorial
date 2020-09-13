@@ -1,0 +1,116 @@
+#+TITLE: Flask + Tox
+#+AUTHOR: Steve Kipp
+
+* 2 seconds, what is Flask?
+Flask is a tiny (sometimes called "micro") web framework for python. Flask in terms of ability there is
+nothing tiny about Flask. I think a good way to describe Flask, is "for those who want less framework
+in their framework"
+
+* 2 more seconds, why use Flask?
+Flask is a full webserver, it supports building not only APIs but can also support HTML serving.
+
+Commonly in python you'll see alot of web development associated with Django. Django is feature
+rich, so that includes things like user management, an admin portal, etc. Which is great but
+it also forms opinionated software, and is a little more resistant to change.
+
+Thats where Flask comes in, flask is small enough and powerful enough to mold to whatever problem
+needs solving.
+
+* Installation, and common dependecies
+Since we're in the modern era of development all languages have package managers, and python has
+pip. Pip is akin to NPM, Gradle, Maven etc. It functions almost exactly the same as well
+
+#+BEGIN_SRC
+    pip install Flask
+#+END_SRC
+
+Other common dependecies
+ - venv / virtualenv (manages python dependecies in their own contained env)
+ - SimpleJSON (JSON for laymen)
+ - python-dotenv (enables support for environment variables good for
+   sensitive information IE user/pass)
+
+None of these required but you'll see them pretty commonly integrated into a lot
+of tutorials without them mentioning to install them
+
+* Hello, World!
+Building the simplest form of application imaginable!
+
+Whats going on here?
+L3 -  we import the Flask class from the flask package (classes are uppercase)
+L5 -  we instantiate the Flask class and store it in the app variable
+
+Side note: WTF is __name__, we'll cover that in a second.
+
+L7:L9 - this is a decorator that links routes to functions, so in this case
+        we're linking the route '/' to the function hello_world() which simply returns
+        the string 'Hello NGA!'
+
+Another side note: what on earth is decorator? Stay tuned.
+
+Running the application, is the exact same way you would run a normal python script
+
+#+BEGIN_SRC
+    python app.py
+#+END_SRC
+
+This will start the server - without hot reload on localhost:5000
+
+You might sometimes see tutorials using the flask command, the reason I don't use
+this is because it sets environment variables that I find hard to manage.
+'flask' on the command line is the same as running flask as a python module
+python -m flask run
+
+* Whython?
+This script is pretty straight forward if you know all of python's
+definitely-not-stupid quirks.
+
+lets talk about some of those not-stupid things:
+
+** WTF is __name__?
+first things first anything with __ is a python reserved variable. you'll see
+it a bunch __init__ __name__ etc.
+
+__name__ is a variable that stores/evaluates to the name of the current module
+so at runtime in the case of L5 __name__ is going to be
+...
+...
+...
+__main__ wait what?
+
+** What is that if statement at the bottom?
+We just talked about how __name__ is reserverd / evaluates to the name of the
+module being run.
+
+UNLESS! that module (is the file) run from the command line, gotcha!
+In this case __name__ will evaulate to '__main__'
+
+Which means that in the command we ran to start flask
+#+BEGIN_SRC
+    python app.python
+#+END_SRC
+
+__name__ is going to evaluate to __main__ and thats then going to call app
+(our flask application) to call the run function.
+
+That name variable, if for instance is run in another file say we have a db
+connection file db.py and it has a module called DB, if we were to import db.py
+and then evaluate __name__ it will be 'db.py'
+
+** What is a decorator?
+
+* Who needs databases?
+
+* So many classes, so little time...
+
+* The template
+
+* Testing
+
+* Detox
+
+* Running
+
+* PEP8
+
+* FIN
