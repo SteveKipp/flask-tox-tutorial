@@ -210,13 +210,68 @@ The way this test is structured it verfies what the output should be, and if not
 
 
 
-* Birds aren't real / Everything is fake
+* Test Runner: 2049
 
 Right now the way everything is run can get tedious very fast, having the program fault on failure, etc.
 
-Tox is a built in python standard library framework for managing unit tests.
+Python is nitorious for having an oversized standard library, but this one
+of those cases that it comes in to save us.
+
+Enter unittest.
+
+Going back to our test file test_db.py we'll need to make some modifications.
+
+L1 -
+#+BEGIN_SRC
+    import unittest
+#+END_SRC
+
+L19-23 - this is the meat of our testing, we have to make a testing class
+that inherits a the unittest.TestCase, from there you'll notice that our
+asserts look awfully familiar, but have a modified syntax.
+
+Now when we run the file we get a cleaner output, that doesn't halt execution.
+
+* Birds aren't real / Everything is fake
+
+The last part of testing in python is often the most confusing, and thats Test Runner: 2049f everything in testing so far
+    - It uses assertions
+    - It part of the unittest framework
+
+Theres just one catch, its all fake!
+
+The purpose of mocking is sometimes hard to derive, the point is that it allows you to test
+Your functions without making actual system calls.
+
+Take an example in our DB, lets say we wanted to test the functionality of an insert function.
+
+Typically if we were to write this test we could have to actually insert the data, verify that it is in there, and the remove the data afterwards.19-23 - this is the meat of our testing, we have to make a testing class
+that inherits a the unittest.TestCase, from there you'll notice that our
+asserts look awfully familiar, but have a modified syntax.
+
+Now when we run the file we get a cleaner output, that doesn't halt execution.
+
+
+
+* Birds aren't real / Everything is fake
+
+The last part of testing in python is often the most confusing, and thats Mocking.
+
+Test Runner: 2049hing in testing so far
+    - It uses assertions
+    - It part of the unittest framework
+
+Theres just one catch, its all fake!
+
+The purpose of mocking is sometimes hard to derive, the point is that it allows you to test
+Your functions without making actual system calls.
+
+Take an example in our DB, lets say we wanted to test the functionality of an insert function.
+
+Typically if we were to write this test we could have to actually insert the data, verify that it is in there, and the remove the data afterwards.
+
+Thats really expensive on the machine and modifies the actual data, which is not something
+we want to do when testing.
 
 
 * PEP8
-
-* FIN
