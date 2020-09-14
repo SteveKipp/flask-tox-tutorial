@@ -98,18 +98,124 @@ connection file db.py and it has a module called DB, if we were to import db.py
 and then evaluate __name__ it will be 'db.py'
 
 ** What is a decorator?
+On LX you'll notice what theres some strange syntax before the function.
+#+BEGIN_SRC
+    @app.route('/')
+#+END_SRC
+
+You'll see a lot of definitions of a decorator that say a decorator takes a function, adds functionality and returns it. Which makes it sound like its something new but it isn't.
+
+A decorator is just short hand for passing a function in to a another function and returning that function.
+
+#+BEGIN_SRC
+    @stupid
+    def hello_world():
+       print("Hello World")
+#+END_SRC
+
+is the same as
+
+#+BEGIN_SRC
+    def hello_world():
+        print("Hello World")
+
+    some_variable = stupid(hello_world)
+#+END_SRC
+
+so in the case of our flask application we're passing our function into the function app.route('/')
+
+SIDENOTE: while not super relavent to this, it should be known.
+That decorators are run at compile time - or interpreted time, they function similar to a macro and can be
+considered metaprogramming, if you're looking for more confusion
 
 * Who needs databases?
 
+Now that we understand .00001% of the goofy in python, we need
+to make our data persist.
+
+Typically you'll see flask connecting to some sort of database
+backend (Postgres/Mongo/Trendy new database that makes questionable sense).
+For the sake of this I'm self containing everything so I'm going to use sqlite3.
+
+Our database will have one single table Customers[id (int), name (varchar)]
+
+We'll make a subfolder named db and make a python module 'db.py'
+
 * So many classes, so little time...
+
+Lets take a look at db.py, its a very small files containing the functions
+that expose the functionality of our database.
+
+L1 - import the sqlite3 module, you'll notice that we didn't have to pip install this.
+SQLite3 is built in to the python standard library as of Python2.5, (this is not the case for postgres)
+
+L3 - Thats what this section header is about, usually these (especially as well see in the template)
+These are usually classes to encapsulate the functionality, but its important to note that this
+object orientation isn't strict.
+
+L4 - you guessed it, there are those two underscores which indicates that this is a python reserved variable
+The init function is a part of python classes that acts as the class constructor.
+Here we establish the connection as well as the cursor
+
+L8 - This is our actual functionality, we'll use the cursor to execut
+our SQL query, and return the result.
+
+Now lets switch back and implement our function into our primary routes
+to app.py
+At the top of the file
+#+BEGIN_SRC
+    from db.db import SQLiteDatabase()
+#+END_SRC
+
+#+BEGIN_SRC
+    @app.route('/customers')
+    def get_customers():
+        return SQLiteDatabase().get_all()
+#+END_SRC
+
+
+Now if we restart the server and hit the endpoint localhost:5000/customers
+We'll get a list of all of the customers!
+
 
 * The template
 
+[Redacted]
+
 * Testing
+Testing in python can seem a litle daunting at first due to mocking, asserts and what not.
+Truth be told testing is almost exactly what you think it is.
 
-* Detox
+Lets start with a test using ol' reliable, our eyes.
+In test_db.py on L8 we'll print the results of our db function call.
 
-* Running
+Run the file as you would any other python file and look at results?
+They look right to me.
+
+While it seems mindblowingly stupid, this is a test, just a really bad one
+We're calling our function and verifying the result.
+
+Obviously this isnt the best strategy as, we're mere humans and our tiny pea brains can think as fast a computer.
+
+We need a way to do this automatically, welcome assert
+
+In our test file we'll add a function on L8 called 'sweet_test'
+L9 - we'll run our function we're testing, and store the results
+L10 - this is where the magic happens, we're going to run the assert function
+The way that assert behaves is a little odd at first, its a conditional with 2 outcomes, success or failure
+In the event that the assert succeeds (our results are correct) it does nothing and continues
+In the event that it fails an exception is thrown and the program is halted.
+
+The way this test is structured it verfies what the output should be, and if not it will fail.
+
+
+
+* Birds aren't real / Everything is fake
+
+Right now the way everything is run can get tedious very fast, having the program fault on failure, etc.
+
+Tox is a built in python standard library framework for managing unit tests.
+
 
 * PEP8
 
